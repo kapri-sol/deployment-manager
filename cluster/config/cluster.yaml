@@ -1,0 +1,40 @@
+resources:
+    - name: test-cluster
+      type: container.v1.cluster
+      properties:
+          zone: us-central1-a
+          cluster:
+              name: test-cluster
+              initialNodeCount: 3
+              nodeConfig:
+                  machineType: "g1-small"
+                  imageType: "COS"
+                  diskType: "pd-standard"
+                  diskSizeGb: 20
+                  oauthScopes:
+                      - "https://www.googleapis.com/auth/compute"
+                      - "https://www.googleapis.com/auth/devstorage.read_only"
+                      - "https://www.googleapis.com/auth/logging.write"
+                      - "https://www.googleapis.com/auth/monitoring"
+                      - "https://www.googleapis.com/auth/cloud-platform"
+                  metadata:
+                      disable-legacy-endpoints: "true"
+                  shieldedInstanceConfig:
+                      enableIntegrityMonitoring: true
+              privateClusterConfig:
+                  enablePrivateNodes: true
+                  masterIpv4CidrBlock: "172.16.16.0/28"
+              # nodeIpv4CidrSize: "172.16.16.0/28"
+              clusterIpv4Cidr: "10.48.0.0/14"
+              servicesIpv4Cidr: "10.0.16.0/20"
+              defaultMaxPodsConstraint:
+                  maxPodsPerNode: "110"
+              addonsConfig:
+                  httpLoadBalancing:
+                      disabled: false
+                  horizontalPodAutoscaling:
+                      disabled: false
+              shieldedNodes:
+                  enabled: true
+              releaseChannel:
+                  channel: REGULAR
